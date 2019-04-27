@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <header><title>PCB Robot Arm</title></header>
+  <head>
+    <style>
+      body {
+        font-size: 40px;
+        background-color: black;
+        text-align: center;
+        color: white;
+      }
+      .button {
+        font-size: 40px;
+        text-align: center;
+      }
+      input[type=radio] {
+        border: 0px;
+        width: 30px;
+        height: 30px;
+      }
+    </style>
+  </head>
+  <body>
+    <form action="/submit">
+      Number of probe points
+      <input type="text" class='button' name="points" value=20><br>
+      <h2>Panel Size</h2>
+      <table align="center">
+        <tr>
+          <th><input type="radio" name="size" value="0" checked></th> <th>Small</th>
+        </tr>
+        <tr>
+          <th><input type="radio" name="size" value="1" checked></th> <th>medium</th>
+        </tr>
+        <tr>
+          <th><input type="radio" name="size" value="2" checked></th> <th>large</th>
+        </tr>
+      </table>
+      <br>
+      <input type="submit" class='button' value="Submit">
+    </form>
+  </body>
+</html>
