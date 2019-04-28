@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+import two_link_main as tlm
 
 app = Flask(__name__)
 
@@ -10,6 +11,7 @@ def root():
 def submit():
   size = int(request.args.get('size'))
   points = int(request.args.get('points'))
+  tlm.two_link_grid(size, points)
   print(points)
   print(size)
   return render_template('index.html')

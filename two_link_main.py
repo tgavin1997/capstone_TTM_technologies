@@ -1,6 +1,6 @@
 import numpy as np
 
-def two_link_grid(panel_size):
+def two_link_grid(panel_size, points):
 
     # xoffset, is the distance where the center of the MX-64 is, measured off the inside aluminum frame on the side where
     # the panels sit up against, believe that would be the 28 inch side
@@ -17,7 +17,6 @@ def two_link_grid(panel_size):
         x, y = np.meshgrid(((np.linspace(2, 23, 5))), np.linspace(2, 17, 4))
         X = xoffset - x
         Y = yoffset + y
-        print(X, Y)
 
 
     # # # Medium panel grid, lines 44-46
@@ -25,14 +24,12 @@ def two_link_grid(panel_size):
         x, y = np.meshgrid(((np.linspace(2, 23, 5))), np.linspace(2, 21, 4))
         X = xoffset - x
         Y = yoffset + y
-        print(X, Y)
 
     # # Large panel grid, lines 48-51
     elif panel_size == 2:
         x, y = np.meshgrid(((np.linspace(2, 27, 5))), np.linspace(2, 23, 4))
         X = xoffset - x
         Y = yoffset + y
-        print(X, Y)
 
     ikin(X, Y)
 
@@ -85,7 +82,4 @@ def ikin(X, Y):
     s_values = (sv1, sv2)
     print(sv1)
     print(sv2)
-
-
-two_link_grid(0)
 
