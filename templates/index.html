@@ -4,40 +4,95 @@
   <head>
     <style>
       body {
-        font-size: 40px;
+        font-family: Verdana, sans-serif;
+        font-size: 35px;
         background-color: black;
         text-align: center;
         color: white;
-      }
-      .button {
-        font-size: 40px;
-        text-align: center;
       }
       input[type=radio] {
         border: 0px;
         width: 30px;
         height: 30px;
       }
+      .button {
+        font-size: 35px;
+        border: none;
+        background-color: white;
+        color: black:
+      }
+      .selected {
+        font-size: 35px;
+        border: 2px solid white;
+        background-color: black;
+        color: white; 
+      }
+      .textForm {
+        width: 100px;
+        font-size: 35px;
+        border: none;
+        background-color: white;
+        color: black:
+      }
     </style>
   </head>
   <body>
-    <form action="/submit">
       Number of probe points
-      <input type="text" class='button' name="points" value=20><br>
+      <input type="text" class='textForm' id='numPoints' name="points" value=20><br>
       <h2>Panel Size</h2>
-      <table align="center">
-        <tr>
-          <th><input type="radio" name="size" value="0" checked></th> <th>Small</th>
-        </tr>
-        <tr>
-          <th><input type="radio" name="size" value="1" checked></th> <th>medium</th>
-        </tr>
-        <tr>
-          <th><input type="radio" name="size" value="2" checked></th> <th>large</th>
-        </tr>
-      </table>
-      <br>
-      <input type="submit" class='button' value="Submit">
     </form>
+    <button class='button' id='small' onclick="setSize('small')">small</button>
+    <button class='button' id='medium' onclick="setSize('medium')">medium</button>
+    <button class='button' id='large' onclick="setSize('large')">large</button>
+    <br>
+    <br>
+    or enter custom dimensions
+    <br>
+    width<input type="text" onclick='resetButtons()'class='textForm' id='width'>
+    height<input type="text" onclick='resetButtons()' class='textForm' id='height'><br>
+    <br>
+    <button class='button' onclick="submit()">submit</button>
+    <script>
+      var size = null;
+      var points = 20;
+      function resetButtons(){
+        size = null;
+        document.getElementById('small').className = 'button';
+        document.getElementById('medium').className = 'button';
+        document.getElementById('large').className = 'button';
+      }
+      function resetDimensions(){
+        document.getElementById('width').value = null;
+        document.getElementById('height').value = null;
+      }
+      function setSize(panelSize){
+        resetButtons();
+        resetDimensions();
+        document.getElementById(panelSize).className = 'selected';
+        if(panelSize === 'small')
+          size = 0;
+        if(panelSize === 'medium')
+          size = 1;
+        if(panelSize === 'large')
+          size = 2;
+      } 
+      function submit(){
+          var xhttp = new XMLHttpRequest();
+          xhttp.onreadystatechange = function() {
+              if(this.readyState == 4 && this.status == 200){
+              }
+          };
+          points = document.getElementById('numPoints').value;
+          let width = document.getElementById('width').value;
+          let height = document.getElementById('height').value;
+          if(width > 0 && height > 0){
+            resetButtons();
+            xhttp.open("GET", "/submit?points=" + points + '&width=' + width + '&height=' + height, true); 
+          }
+          else
+            xhttp.open("GET", "/submit?points=" + points + '&size=' + size, true);
+          xhttp.send();
+      }
+    </script>
   </body>
 </html>
