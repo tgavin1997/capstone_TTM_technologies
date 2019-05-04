@@ -9,7 +9,7 @@ pip install flask
 * ssh into a Linux server
 * Download/clone the repo if you haven't already :
 
-    `git clone https://github.com/tgavin1997/capstone_TTM_)technologies.git`
+    `git clone https://github.com/tgavin1997/capstone_TTM_/technologies.git`
 
 * Every time, before working on the project, please do the following to sync your local repo with github :
     
