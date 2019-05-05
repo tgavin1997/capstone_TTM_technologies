@@ -2,7 +2,7 @@ import math
 import numpy as np
 
 
-def num_pts (width, height, points,size=4):
+def num_pts (width, height, points,size):
     if size ==0:
         width = 24
         height=18
@@ -19,25 +19,27 @@ def num_pts (width, height, points,size=4):
 
     n_x= (math.sqrt(((w / h) * pts) + ((w - h)**2) / (4 * (h ** 2))) - ((w - h)/(2 * h)))
     n_x= round(n_x)
-
+    print(n_x)
     n_y= pts/n_x
 
     n_y=round(n_y)
-
+    print(n_y)
     pts=n_y * n_x
 
     delx = w/(n_x - 1)
     dely = h/(n_y - 1)
-    return(delx,dely,pts)
+    return(n_x,n_y,delx,dely,pts)
 
-def matrix(width,height,delx,dely,pts):
-    length =round(width/delx + 1)
-    x = np.ndarray(shape=length)
+def length(n_x,n_y,delx,dely):
+    x = np.zeros(shape=n_x)
 
-    y=  np.ndarray(shape=(height/dely + 1))
+    y=  np.zeros(shape=n_y)
     return(x,y)
 
 
 if __name__ == "__main__":
-    print(num_pts(30,20,400))
-    print(matrix(30,20,.25,.25,100))
+    bar=num_pts(18,24,400,4)
+
+    print(bar[0])
+    print(bar[1])
+    print(length(bar[0],bar[1],bar[2],bar[3]))
