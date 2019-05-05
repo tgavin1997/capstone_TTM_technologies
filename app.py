@@ -9,11 +9,13 @@ def root():
 
 @app.route("/submit", methods=['GET', 'POST'])
 def submit():
-  size = int(request.args.get('size'))
   points = int(request.args.get('points'))
-  tlm.two_link_grid(size, points)
+  width = int(request.args.get('width'))
+  height = int(request.args.get('height'))
+  #tlm.two_link_grid(size, points)
   print(points)
-  print(size)
+  print(width)
+  print(height)
   return render_template('index.html')
 
 if __name__ == "__main__":
