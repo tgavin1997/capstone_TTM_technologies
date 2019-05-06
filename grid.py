@@ -5,7 +5,7 @@ import numpy as np
 def num_pts (width, height, points):
     l_1= 15                     #length from the base to the right                     #length from the base to the left
     w= width
-    h= height
+    h= height - 4
     pts= points
 
     n_x= (math.sqrt(((w / h) * pts) + ((w - h)**2) / (4 * (h ** 2))) - ((w - h)/(2 * h)))
@@ -15,6 +15,7 @@ def num_pts (width, height, points):
     n_y=round(n_y)
     pts=n_y * n_x
 
+    #print(pts)
     delx = w/(n_x - 1)          #the spacing between the x points
     dely = h/(n_y - 1)          #the spacing beween the y points
 
@@ -25,17 +26,18 @@ def num_pts (width, height, points):
     if (w > l_1):
         offset= -(w - l_1)
         x=np.arange(offset,l_1,delx)
-        y=np.arange(1,height,dely)
+        y=np.arange(3,height,dely)
     elif(w < l_1):
         offset = l_1 - w
         x=np.arange(offset, l_1,delx)
         y=np.arange(1,height,dely)
 
-
+    pts = (x.size) * (y.size)
+    print(pts)
     return(x,y)
 
 
 if __name__ == "__main__":
-        print(num_pts(18,24,400))
+        print(num_pts(18,24,200))
 
 
