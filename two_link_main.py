@@ -1,4 +1,10 @@
-import numpy as np
+import time
+import grid
+
+if __name__ == "__main__":
+        print(grid.num_pts(18,24,200))
+
+
 
 def two_link_grid(panel_size, points):
 
