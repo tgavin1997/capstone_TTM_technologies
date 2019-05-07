@@ -1,8 +1,13 @@
 import time
 import grid
-
+import two_link_main
+import numpy as np
 if __name__ == "__main__":
-        print(grid.num_pts(18,24,200))
+
+        two_link_main.two_link_grid(2,200)
+        #bar= grid.num_pts(18,24,20)
+        #two_link_main.ikin(bar[0],bar[1])
+        #two_link_main.ikin(bar(0),bar(1))
 
 
 
@@ -45,8 +50,8 @@ def ikin(X, Y):
     a1 = 16
     a2 = 14.5
 
-    beta = np.degrees(np.arccos(((a1**2 + a2**2 - X[:]**2 - Y[:]**2)/ (2 * a1 * a2))))
-    alpha = np.degrees(np.arccos((X[:]**2 + Y[:]**2 + a1**2 - a2**2) / (2 * a1 * np.sqrt(X[:]**2 + Y[:]**2))))
+    beta = np.degrees(np.arccos(((a1 ** 2 + a2 ** 2 - X[:] ** 2 - Y[:] ** 2)/ (2 * a1 * a2))))
+    alpha = np.degrees(np.arccos((X[:] ** 2 + Y[:] ** 2 + a1 ** 2 - a2 ** 2) / (2 * a1 * np.sqrt(X[:] ** 2 + Y[:] ** 2))))
     gamma = np.degrees(np.arctan2(Y[:], X[:]))
     theta1r = gamma - alpha
     theta2r = 180 - beta
