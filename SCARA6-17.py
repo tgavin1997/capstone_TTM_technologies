@@ -22,57 +22,63 @@
 # Alex put together the grid formula and worked on the move_servo function as well as Shawn
 
 # Python Libraries Imported
-from pydynamixel import dynamixel
+#from pydynamixel import dynamixel
 import numpy as np
 import serial
+import grid
 import time
 
+if __name__ == "__main__":
+        bar = (grid.num_pts(24,10,20))
 
-def grid_formula(w, h, points):
-    nx = sqrt((w/h)*n + (((w - h)**2)/(4*h**2))) - ((w - h)/(2*h))
-    yx = n/(nx)
+        ikin(bar[0],bar[1])
 
 
-def grid(panel_size, points):
-    # xoffset, is the distance where the center of the MX-64 is, measured off the inside aluminum
-    # frame on the side where the panels sit up against, believe that would be the 28 inch side.
-    xoffset = 14
-    # yoffset, is the distance where the center of the MX-64 is, measured off the inside aluminum
-    # frame on the side where the panels sit up against, believe that would be the 31 inch side.
-    yoffset = 3
-    # when running the code for the servo values for the three panels comment out the ones that
-    # you are not getting values from.
-    # Small panel grid
-    if panel_size == 0:
-        w = 16
-        h = 22
-        grid_formula(w, h, points)
-        # x, y = np.meshgrid(((np.linspace(2, 23, 5))), np.linspace(2, 17, 4))
-        X = xoffset - nx
-        Y = yoffset + ny
-        print(X, Y)
-    # Medium panel grid
-    elif panel_size == 1:
-        w = 20
-        h = 22
-        grid_formula(w, h, points)
-        # x, y = np.meshgrid(((np.linspace(2, 23, 5))), np.linspace(2, 21, 4))
-        X = xoffset - nx
-        Y = yoffset + ny
-        print(X, Y)
-    # Large panel grid
-    elif panel_size == 2:
-        w = 22
-        h = 26
-        grid_formula(w, h, points)
-        # x, y = np.meshgrid(((np.linspace(2, 27, 5))), np.linspace(2, 23, 4))
-        X = xoffset - nx
-        Y = yoffset + ny
-        print(X, Y)
-    # Custom panel grid
-    else:
-        grid_formula(w, h, points)
-    return(X, Y)
+# def grid_formula(w, h, points):
+#     nx = sqrt((w/h)*n + (((w - h)**2)/(4*h**2))) - ((w - h)/(2*h))
+#     yx = n/(nx)
+
+
+# def grid(panel_size, points):
+#     # xoffset, is the distance where the center of the MX-64 is, measured off the inside aluminum
+#     # frame on the side where the panels sit up against, believe that would be the 28 inch side.
+#     xoffset = 14
+#     # yoffset, is the distance where the center of the MX-64 is, measured off the inside aluminum
+#     # frame on the side where the panels sit up against, believe that would be the 31 inch side.
+#     yoffset = 3
+#     # when running the code for the servo values for the three panels comment out the ones that
+#     # you are not getting values from.
+#     # Small panel grid
+#     if panel_size == 0:
+#         w = 16
+#         h = 22
+#         grid_formula(w, h, points)
+#         # x, y = np.meshgrid(((np.linspace(2, 23, 5))), np.linspace(2, 17, 4))
+#         X = xoffset - nx
+#         Y = yoffset + ny
+#         print(X, Y)
+#     # Medium panel grid
+#     elif panel_size == 1:
+#         w = 20
+#         h = 22
+#         grid_formula(w, h, points)
+#         # x, y = np.meshgrid(((np.linspace(2, 23, 5))), np.linspace(2, 21, 4))
+#         X = xoffset - nx
+#         Y = yoffset + ny
+#         print(X, Y)
+#     # Large panel grid
+#     elif panel_size == 2:
+#         w = 22
+#         h = 26
+#         grid_formula(w, h, points)
+#         # x, y = np.meshgrid(((np.linspace(2, 27, 5))), np.linspace(2, 23, 4))
+#         X = xoffset - nx
+#         Y = yoffset + ny
+#         print(X, Y)
+#     # Custom panel grid
+#     else:
+#         grid_formula(w, h, points)
+#     return(X, Y)
 
 
 def ikin(X, Y):
@@ -122,7 +128,7 @@ def ikin(X, Y):
     s_values = (sv1, sv2)
     print(sv1)
     print(sv2)
+    return(sv1,sv2)
 
-
-def move_servo(sv1, sv2):
+# def move_servo(sv1, sv2):
 

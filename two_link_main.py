@@ -1,7 +1,9 @@
 import time
-import grid
 import two_link_main
 import numpy as np
+from pydynamixel import dynamixel, registers
+import math
+
 if __name__ == "__main__":
 
         two_link_main.two_link_grid(2,200)
@@ -11,39 +13,49 @@ if __name__ == "__main__":
 
 
 
-def two_link_grid(panel_size, points):
 
-    # xoffset, is the distance where the center of the MX-64 is, measured off the inside aluminum frame on the side where
-    # the panels sit up against, believe that would be the 28 inch side
-    xoffset = 14
-    # yoffset, is the distance where the center of the MX-64 is, measured off the inside aluminum frame on the side where
-    # the panels sit up against, believe that would be the 31 inch side
-    yoffset = 3
+def num_pts (width, height, points):
 
-    # when running the code for the servo values for the three panels comment out the ones that you are not getting values
-    # from.
-    # Just highlight and press Ctrl+/ to comment and uncomment out
-    # Small panel grid, lines 39-41
-    if panel_size == 0:
-        x, y = np.meshgrid(((np.linspace(2, 23, 5))), np.linspace(2, 17, 4))
-        X = xoffset - x
-        Y = yoffset + y
+    l_1= 15                     #length from the base to the right                     #length from the base to the left
+    w= width - 2
+    h= height - 4
+    if points <=90:
+        pts= points +5
+    elif points >90:
+        pts= points
+    n_x= (math.sqrt(((w / h) * pts) + ((w - h)**2) / (4 * (h ** 2))) - ((w - h)/(2 * h)))
+    n_x= round(n_x)
 
+    n_y= pts/n_x
 
-    # # # Medium panel grid, lines 44-46
-    elif panel_size == 1:
-        x, y = np.meshgrid(((np.linspace(2, 23, 5))), np.linspace(2, 21, 4))
-        X = xoffset - x
-        Y = yoffset + y
+    n_y=round(n_y)
+    point=n_y * n_x
+    print(point)
+    delx = w/(n_x -1)          #the spacing between the x points
 
-    # # Large panel grid, lines 48-51
-    elif panel_size == 2:
-        x, y = np.meshgrid(((np.linspace(2, 27, 5))), np.linspace(2, 23, 4))
-        X = xoffset - x
-        Y = yoffset + y
+    dely = h/(n_y -1)        #the spacing beween the y points
 
-    ikin(X, Y)
+    print(delx)
+    print(dely)
+    #x = np.zeros(shape=n_x)     #creates an array of zeros with length values = of # of points in x direction
 
+    #y=  np.zeros(shape=n_y)     #creates an array of zeros with length values = of # of points in y direction
+
+    if (w > l_1):
+        offset= -(w - l_1)
+        x=np.arange(offset,l_1,delx)
+        y=np.arange(3,height,dely)
+        X,Y = np.meshgrid(x,y)
+
+    elif(w < l_1):
+        offset = l_1 - w
+        x=np.arange(offset, l_1,delx)
+        y=np.arange(1,height,dely)
+        X,Y = np.meshgrid(x,y)
+
+    point = x.size * y.size
+    print(point)
+    return(X,Y)
 
 def ikin(X, Y):
     # Arm Link Lengths: change theses as needed
@@ -93,4 +105,38 @@ def ikin(X, Y):
     s_values = (sv1, sv2)
     print(sv1)
     print(sv2)
+    return(sv1,sv2)
+
+
+def move(sv1, sv2):
+    serial_port = 'dev/ttyUSB0'
+    servo1_id = 1
+    servo2_id = 2
+    servo3_id = 3
+
+    while(i< len(sv1)):
+        k=0
+        i=0
+        servoPos1= int(sv1[k])
+        servoPos2= int(sv2[k])
+        ser = dynamixel.get_serial_for_url(serial_port)
+        dynamixel.setposition(ser,servo1_id,servoPos1)
+        dynamixel.setposition(ser,servo2_id,servoPos2)
+        dynamixel.send_action_packet(ser)
+
+        print('Success')
+        i = i + 1
+        k = k + 1
+        time.sleep(3)
+    return()
+
+
+def home():
+    ser = dynamixel.get_serial_for_url(serial_port)
+    dynamixel.setposition(ser, servo1_id, 3071)
+    dynamixel.setposition(ser, servo2_id, 1024)
+    dynamixel.send_action_packet(ser)
+    return()
+
+
 

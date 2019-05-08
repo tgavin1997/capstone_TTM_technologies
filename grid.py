@@ -33,13 +33,13 @@ def num_pts (width, height, points):
         offset= -(w - l_1)
         x=np.arange(offset,l_1,delx)
         y=np.arange(3,height,dely)
-        X,Y = np.meshgrid(x), np.meshgrid(y)
+        X,Y = np.meshgrid(x,y)
 
     elif(w < l_1):
         offset = l_1 - w
         x=np.arange(offset, l_1,delx)
         y=np.arange(1,height,dely)
-        X,Y = np.meshgrid(x),np.meshgrid(y)
+        X,Y = np.meshgrid(x,y)
 
     point = x.size * y.size
     print(point)
