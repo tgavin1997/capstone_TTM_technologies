@@ -1,7 +1,7 @@
 import time
 import two_link_main
 import numpy as np
-from pydynamixel import dynamixel, registers
+#from pydynamixel import dynamixel, registers
 import math
 
 if __name__ == "__main__":
