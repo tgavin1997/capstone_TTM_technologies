@@ -163,4 +163,4 @@ if __name__ == "__main__":
 
         bar= grid.num_pts(18,24,20)
         ikin(bar[0],bar[1])
-        #two_link_main.ikin(bar(0),bar(1))
+        
