@@ -30,18 +30,7 @@ import numpy as np
 import grid
 import math
 import time
-
-
-
 import math
-
-if __name__ == "__main__":
-
-        bar= grid.num_pts(18,24,20)
-        ikin(bar[0],bar[1])
-        #two_link_main.ikin(bar(0),bar(1))
-
-
 
 
 def num_pts (width, height, points):
@@ -170,3 +159,8 @@ def home():
 
 
 
+if __name__ == "__main__":
+
+        bar= grid.num_pts(18,24,20)
+        ikin(bar[0],bar[1])
+        #two_link_main.ikin(bar(0),bar(1))
