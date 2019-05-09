@@ -7,12 +7,9 @@ import math
 if __name__ == "__main__":
 
         two_link_main.two_link_grid(2,200)
-        #bar= grid.num_pts(18,24,20)
-        #two_link_main.ikin(bar[0],bar[1])
-        #two_link_main.ikin(bar(0),bar(1))
-
-
-
+        bar = grid.num_pts(18,24,20)
+        two_link_main.ikin(bar[0],bar[1])
+        
 
 def num_pts (width, height, points):
 
