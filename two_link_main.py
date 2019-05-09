@@ -24,7 +24,7 @@ Kinematic Calculations and Servo Values for TTM Technology's SCARA Robot. Name: 
 '''
 
 # Python Libraries Imported
-from pydynamixel import dynamixel, registers
+# from pydynamixel import dynamixel, registers
 import two_link_main
 import numpy as np
 import grid
@@ -37,9 +37,8 @@ import math
 
 if __name__ == "__main__":
 
-        two_link_grid(2,200)
-        #bar= grid.num_pts(18,24,20)
-        #two_link_main.ikin(bar[0],bar[1])
+        bar= grid.num_pts(18,24,20)
+        ikin(bar[0],bar[1])
         #two_link_main.ikin(bar(0),bar(1))
 
 
