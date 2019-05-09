@@ -1,30 +1,33 @@
-# Kinematic Calculations and Servo Values for TTM Technology's SCARA Robot. Name: SCARA6-17
-# 2019 PSU Senior Mechanical Engineering Capstone, Team 17
+'''
+Kinematic Calculations and Servo Values for TTM Technology's SCARA Robot. Name: SCARA6-17
+ 2019 PSU Senior Mechanical Engineering Capstone, Team 17
 
-# Shawn Richardson:     Programmer and Programming Author/Editor, Designer, CAD, Subgroup Overseer
-# Alex Gavin:           Programmer, Designer, Subgroup Overseer
-# Chris McCormick:      CAD, Designer, Fabricator, Assembly
-# Erik Kolste:          CAD, Designer, FEA, Recorder, Fabricator, Assembly
-# John Norris:          Group Leader, Project Planner, Designer, CAD, Assembly
-# Quinn Gordon:         CAD, Designer, Assembly
+ Shawn Richardson:     Programmer and Programming Author/Editor, Designer, CAD, Subgroup Overseer
+ Alex Gavin:           Programmer, Designer, Subgroup Overseer
+ Chris McCormick:      CAD, Designer, Fabricator, Assembly
+ Erik Kolste:          CAD, Designer, FEA, Recorder, Fabricator, Assembly
+ John Norris:          Group Leader, Project Planner, Designer, CAD, Assembly
+ Quinn Gordon:         CAD, Designer, Assembly
 
-# Start Date:   03/04/19
-# End Date:     05/17/19
+ Start Date:   03/04/19
+ End Date:     05/17/19
 
-# Script Object: This script calculates the servo values for Dynamixel MX28 and MX64 servos by using
-# geometric inverse kinematics, as all code is carried out in Python.
-# The values are than sent to the Dynamixel U2D2 compiler to the first Dynamixel in line out to the
-# others which than positions the servos to the desired/programmed coordinates.
-# The "grid_formula" came from
-# https://math.stackexchange.com/questions/1039482/how-to-evenly-space-a-number-of-points-in-a-rectangle
-# inverse kinematics starting from beta to theta2l came from "Modern Robotics"
-# the manipulation of the servo values starting at the first v1l through sv2.flatten was developed by Shawn
-# Alex put together the grid formula and worked on the move_servo function as well as Shawn
+ Script Object: This script calculates the servo values for Dynamixel MX28 and MX64 servos by using
+ geometric inverse kinematics, as all code is carried out in Python.
+ The values are than sent to the Dynamixel U2D2 compiler to the first Dynamixel in line out to the
+ others which than positions the servos to the desired/programmed coordinates.
+ The "grid_formula" came from
+ https://math.stackexchange.com/questions/1039482/how-to-evenly-space-a-number-of-points-in-a-rectangle
+ inverse kinematics starting from beta to theta2l came from "Modern Robotics"
+ the manipulation of the servo values starting at the first v1l through sv2.flatten was developed by Shawn
+ Alex put together the grid formula and worked on the move_servo function as well as Shawn
+'''
 
 # Python Libraries Imported
-#from pydynamixel import dynamixel, registers
+from pydynamixel import dynamixel, registers
 import two_link_main
 import numpy as np
+import grid
 import math
 import time
 
@@ -34,7 +37,7 @@ import math
 
 if __name__ == "__main__":
 
-        two_link_main.two_link_grid(2,200)
+        two_link_grid(2,200)
         #bar= grid.num_pts(18,24,20)
         #two_link_main.ikin(bar[0],bar[1])
         #two_link_main.ikin(bar(0),bar(1))
