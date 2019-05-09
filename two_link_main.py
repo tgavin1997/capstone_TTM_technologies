@@ -22,7 +22,7 @@
 # Alex put together the grid formula and worked on the move_servo function as well as Shawn
 
 # Python Libraries Imported
-from pydynamixel import dynamixel, registers
+#from pydynamixel import dynamixel, registers
 import two_link_main
 import numpy as np
 import math
