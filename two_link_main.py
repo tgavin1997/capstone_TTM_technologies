@@ -6,10 +6,21 @@ import math
 
 if __name__ == "__main__":
 
+<<<<<<< HEAD
         two_link_main.two_link_grid(2,200)
         bar = grid.num_pts(18,24,20)
         two_link_main.ikin(bar[0],bar[1])
         
+=======
+        bar = two_link_main.num_pts(24,18,20)
+
+        bar2 = two_link_main.ikin(bar[0],bar[1])
+        two_link_main.move(bar2[0],bar2[1])
+        two_link_main.home
+
+
+
+>>>>>>> c0e4575f34de673b68ed440c55ee0e0f8c93a744
 
 def num_pts (width, height, points):
 
@@ -111,7 +122,7 @@ def move(sv1, sv2):
     servo2_id = 2
     servo3_id = 3
 
-    while(i< len(sv1)):
+    while(i < len(sv1)):
         k=0
         i=0
         servoPos1= int(sv1[k])
