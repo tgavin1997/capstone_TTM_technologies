@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 import two_link_main as tlm
+import grid
 
 app = Flask(__name__)
 
@@ -12,10 +13,9 @@ def submit():
   points = int(request.args.get('points'))
   width = int(request.args.get('width'))
   height = int(request.args.get('height'))
-  #tlm.two_link_grid(size, points)
-  print(points)
-  print(width)
-  print(height)
+  print("Number of points: " + str(points) + ", width: " + str(width) + " height: " + str(height))
+  bar = grid.num_pts(width, height, points)
+  tlm.ikin(bar[0], bar[1])
   return render_template('index.html')
 
 if __name__ == "__main__":
