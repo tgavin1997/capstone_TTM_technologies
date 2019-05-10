@@ -33,54 +33,73 @@ import time
 import math
 
 
-def num_pts (width, height, points):
+def num_pts (length, width, points):
+    xoffset = 14
+    yoffset = 3
 
-    l_1= 15                     #length from the base to the right                     #length from the base to the left
-    w= width - 2
-    h= height - 4
-    if points <=90:
-        pts= points +5
-    elif points >90:
-        pts= points
-    n_x= (math.sqrt(((w / h) * pts) + ((w - h)**2) / (4 * (h ** 2))) - ((w - h)/(2 * h)))
-    n_x= round(n_x)
+    l = length
+    w = width
+    n = points
 
-    n_y= pts/n_x
+    # if num_pts(24, 18, points):
 
-    n_y=round(n_y)
-    point=n_y * n_x
-    print(point)
-    delx = w/(n_x -1)          #the spacing between the x points
+    nx = mt.sqrt(((l*n)/w) + (((l - w)**2)/(4*w**2))) - ((l - w)/(2*w))
+    ny = n/nx
+    del_x = l/(nx - 1)
+    del_y = w/(ny - 1)
+    rd_nx = round(nx)
+    rd_ny = round(ny)
+    x, y = np.meshgrid(((np.linspace(1, l - 1, rd_nx))), np.linspace(1, w - 1, rd_ny))
+    X = xoffset - x
+    Y = yoffset + y
 
-    dely = h/(n_y -1)        #the spacing beween the y points
+##    l_1= 15                     #length from the base to the right                     #length from the base to the left
+##    w= width - 2
+##    h= height - 4
+##    if points <=90:
+##        pts= points +5
+##    elif points >90:
+##        pts= points
+##    n_x= (math.sqrt(((w / h) * pts) + ((w - h)**2) / (4 * (h ** 2))) - ((w - h)/(2 * h)))
+##    n_x= round(n_x)
+##
+##    n_y= pts/n_x
+##
+##    n_y=round(n_y)
+##    point=n_y * n_x
+##    print(point)
+##    delx = w/(n_x -1)          #the spacing between the x points
+##
+##    dely = h/(n_y -1)        #the spacing beween the y points
+##
+##    print(delx)
+##    print(dely)
+##    #x = np.zeros(shape=n_x)     #creates an array of zeros with length values = of # of points in x direction
+##
+##    #y=  np.zeros(shape=n_y)     #creates an array of zeros with length values = of # of points in y direction
+##
+##    if (w > l_1):
+##        offset= -(w - l_1)
+##        x=np.arange(offset,l_1,delx)
+##        y=np.arange(3,height,dely)
+##        X,Y = np.meshgrid(x,y)
+##
+##    elif(w < l_1):
+##        offset = l_1 - w
+##        x=np.arange(offset, l_1,delx)
+##        y=np.arange(1,height,dely)
+##        X,Y = np.meshgrid(x,y)
+##
+##    point = x.size * y.size
+##    print(point)
+##    return(X,Y)
 
-    print(delx)
-    print(dely)
-    #x = np.zeros(shape=n_x)     #creates an array of zeros with length values = of # of points in x direction
-
-    #y=  np.zeros(shape=n_y)     #creates an array of zeros with length values = of # of points in y direction
-
-    if (w > l_1):
-        offset= -(w - l_1)
-        x=np.arange(offset,l_1,delx)
-        y=np.arange(3,height,dely)
-        X,Y = np.meshgrid(x,y)
-
-    elif(w < l_1):
-        offset = l_1 - w
-        x=np.arange(offset, l_1,delx)
-        y=np.arange(1,height,dely)
-        X,Y = np.meshgrid(x,y)
-
-    point = x.size * y.size
-    print(point)
-    return(X,Y)
 
 def ikin(X, Y):
     # Arm Link Lengths: change theses as needed
     a1 = 16
     a2 = 14.5
-
+    # Inverse kinematics from "Modern Robotics"
     beta = np.degrees(np.arccos(((a1 ** 2 + a2 ** 2 - X[:] ** 2 - Y[:] ** 2)/ (2 * a1 * a2))))
     alpha = np.degrees(np.arccos((X[:] ** 2 + Y[:] ** 2 + a1 ** 2 - a2 ** 2) / (2 * a1 * np.sqrt(X[:] ** 2 + Y[:] ** 2))))
     gamma = np.degrees(np.arctan2(Y[:], X[:]))
@@ -90,41 +109,42 @@ def ikin(X, Y):
     theta2l = beta - 180
     # Ratio for MX
     r = 4095/360
-    # Servo values for left and right elbow orientations based on calculated theta's
+    # Servo values for left and right elbow orientations
     v1l = (theta1l + 90) * r
     v2r = (180 + theta2r) * r
     v1r = (theta1r + 90) * r
     v2l = (180 - abs(theta2l)) * r
-    # the values are than rounded to whole number integers
-    v1l = np.around(v1l, decimals=0)
-    v2r = np.around(v2r, decimals=0)
-    v1r = np.around(v1r, decimals=0)
-    v2l = np.around(v2l, decimals=0)
-    # Every other column is flipped starting with the second to provide better effeciency of robot arm movement
+    # Values rounded to whole number integers
+    v1l = np.around(v1l, decimals = 0)
+    v2r = np.around(v2r, decimals = 0)
+    v1r = np.around(v1r, decimals = 0)
+    v2l = np.around(v2l, decimals = 0)
+    # Every other column flipped for effeciency 
     v1l[:, 1::2] = v1l[::-1, 1::2]
     v2r[:, 1::2] = v2r[::-1, 1::2]
     v1r[:, 1::2] = v1r[::-1, 1::2]
     v2l[:, 1::2] = v2l[::-1, 1::2]
-    # The flipped arrays are transformed to a list in order of indexing
+    # Transformed to a list
     v1l_flat = v1l.flatten('F')
     v2r_flat = v2r.flatten('F')
     v1r_flat = v1r.flatten('F')
     v2l_flat = v2l.flatten('F')
-    # this returns indices of the max element, in this case 3000, so the arm can remain in the parameters of the PCB's
+    # Returns indices of the max element >= 3000
+    # so whole arm can remain in workspace
     idx = np.argmax(v1l_flat>=3000)
-    # those values in V1LA >= 3000 are exchanged for the corresponding values in V1RA
+    # Values >= 3000 in v1l are exchanged for the corresponding values in v1r
     v1l_flat[idx:] = v1r_flat[idx:]
     v2l_flat[idx:] = v2r_flat[idx:]
-    # V1LA and V2LA reshaped to original order with replaced values creating SV1 (Servo Value 1) and SV2
+    # v1l and v2l reshaped to create sv1 and sv2
     sv1 = np.reshape(v1l_flat, v1l.shape, order='F')
     sv2 = np.reshape(v2l_flat, v2l.shape, order='F')
-    # Servo values are transformed to a list in order to communicate the values appropriately to the Arduino
+    # sv1 and sv2 transformed to a list
     sv1 = sv1.flatten('F')
     sv2 = sv2.flatten('F')
     s_values = (sv1, sv2)
     print(sv1)
     print(sv2)
-    return(sv1,sv2)
+    return(sv1, sv2)
 
 
 def move(sv1, sv2):
@@ -161,6 +181,6 @@ def home():
 
 if __name__ == "__main__":
 
-        bar= grid.num_pts(18,24,20)
+        bar= grid.num_pts(24,18,3)
         ikin(bar[0],bar[1])
         

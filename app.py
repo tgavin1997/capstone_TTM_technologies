@@ -11,10 +11,10 @@ def root():
 @app.route("/submit", methods=['GET', 'POST'])
 def submit():
   points = int(request.args.get('points'))
+  length = int(request.args.get('length'))
   width = int(request.args.get('width'))
-  height = int(request.args.get('height'))
-  print("Number of points: " + str(points) + ", width: " + str(width) + " height: " + str(height))
-  bar = grid.num_pts(width, height, points)
+  print("Number of points: " + str(points) + ", length: " + str(length) + " width: " + str(width))
+  bar = tlm.num_pts(length, width, points)
   tlm.ikin(bar[0], bar[1])
   return render_template('index.html')
 
