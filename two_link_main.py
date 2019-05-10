@@ -181,6 +181,6 @@ def home():
 
 if __name__ == "__main__":
 
-        bar= grid.num_pts(24,18,3)
-        ikin(bar[0],bar[1])
+##        bar= grid.num_pts(24,18,3)
+##        ikin(bar[0],bar[1])
         
