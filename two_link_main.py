@@ -1,6 +1,6 @@
 '''
 Background:
-    This is the main script that encompus's the functions for TTM's two link serial manipulator that
+    This is the main script that encompusses the functions for TTM's two link serial manipulator that
     takes the place of manual copper thickness probing with that of a Fischer Scope.
 
     The project was carried on by a one of PSU's 2019 Senior Mechanical Engineering Capstones, Team 17
@@ -29,11 +29,11 @@ Script Object:
     From there the sizes and number of points carry through over to the num_pts function which calculates
     the corrdinates over which the robot is to move to probe, the nx and ny formula came from Stack Exchange,
     https://math.stackexchange.com/questions/1039482/how-to-evenly-space-a-number-of-points-in-a-rectangle.
-    However due to the algorithim of this formula what the user inputs in the GUI for the number of points
+    However due to the algorithm of this formula what the user inputs in the GUI for the number of points
     could perhaps not be the actual number of points calculated in the formula. The reason for this is not
     known as it was not evaluated due to project completion time.
     
-    The inverse kinematics are than calculated using trigometeric functions, obtained from
+    The inverse kinematics are than calculated using trigonometeric functions, obtained from
     Modern Robotics: Mechanics, Planning, and Control, 2017, pgs. 187-188.
 
     After using kinematics and finding servo values for servo 1 and 2 they are than forced to move using
@@ -73,7 +73,7 @@ def num_pts (length, width, points):
 def ikin(X, Y):
     # Arm Link Lengths: change theses as needed
     a1 = 16
-    a2 = 14.5
+    a2 = 16.5
     # Inverse kinematics
     beta = np.degrees(np.arccos(((a1 ** 2 + a2 ** 2 - X[:] ** 2 - Y[:] ** 2)/ (2 * a1 * a2))))
     alpha = np.degrees(np.arccos((X[:] ** 2 + Y[:] ** 2 + a1 ** 2 - a2 ** 2) / (2 * a1 * np.sqrt(X[:] ** 2 + Y[:] ** 2))))
