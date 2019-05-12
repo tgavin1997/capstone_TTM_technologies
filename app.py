@@ -1,3 +1,4 @@
+import threading, webbrowser
 from flask import Flask, render_template, request
 import two_link_main as tlm
 import grid
@@ -24,4 +25,6 @@ def stop():
   return render_template('index.html')
 
 if __name__ == "__main__":
+  url = "http://127.0.0.1:5000"
+  threading.Timer(1.25, lambda: webbrowser.open(url) ).start()
   app.run()
