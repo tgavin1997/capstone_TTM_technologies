@@ -56,8 +56,8 @@ def num_pts (length, width, points):
         l = length
         w = width
         n = points
-        xoffset = 14
-        yoffset = 3
+        xoffset = 15
+        yoffset = 4
         nx = mt.sqrt(((l*n)/w) + (((l - w)**2)/(4*w**2))) - ((l - w)/(2*w))
         ny = n/nx
         del_x = l/(nx - 1)
