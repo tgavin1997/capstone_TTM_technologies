@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import threading, webbrowser
 import sys
 from flask import Flask, render_template, request
