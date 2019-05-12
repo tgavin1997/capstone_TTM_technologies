@@ -15,11 +15,11 @@
         width: 30px;
         height: 30px;
       }
-      .button {
+      .button , .Stop {
         font-size: 35px;
         border: none;
         background-color: white;
-        color: black:
+        color: black;
       }
       .selected {
         font-size: 35px;
@@ -32,7 +32,12 @@
         font-size: 35px;
         border: none;
         background-color: white;
-        color: black:
+        color: black;
+      }
+      .Stop {
+        color: white;
+        background-color: red;
+        margin: 40px;
       }
     </style>
   </head>
@@ -51,7 +56,9 @@
     width<input type="text" onclick='resetButtons()'class='textForm' id='width' value=''>
     height<input type="text" onclick='resetButtons()' class='textForm' id='height' value=''><br>
     <br>
-    <button class='button' onclick="submit()">submit</button>
+    <button class='button' onclick="submit()">Submit</button>
+    <br>
+    <button class='Stop' onclick="stop()">Stop</button>
     <script>
       var width = 0;
       var height = 0;
@@ -86,26 +93,35 @@
         }
       } 
       function submit(){
-          var xhttp = new XMLHttpRequest();
-          xhttp.onreadystatechange = function() {
-            if(this.readyState == 4 && this.status == 200){
-            }
-          };
-          points = document.getElementById('numPoints').value;
-          widthForm = document.getElementById('width').value;
-          heightForm = document.getElementById('height').value;
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+          if(this.readyState == 4 && this.status == 200){
+          }
+        };
+        points = document.getElementById('numPoints').value;
+        widthForm = document.getElementById('width').value;
+        heightForm = document.getElementById('height').value;
         if( (widthForm.length == 0 || heightForm.length === 0) && width > 0 && height > 0){
             xhttp.open("GET", "/submit?points=" + points + '&width=' + width + '&height=' + height, true); 
           }
-          else if(widthForm > 0 && heightForm > 0){
-            resetButtons();
-            xhttp.open("GET", "/submit?points=" + points + '&width=' + widthForm + '&height=' + heightForm, true); 
+        else if(widthForm > 0 && heightForm > 0){
+          resetButtons();
+          xhttp.open("GET", "/submit?points=" + points + '&width=' + widthForm + '&height=' + heightForm, true); 
+        }
+        else{
+          alert("please enter a positive width and height or select small medium or large");
+          return;
+        }
+        xhttp.send();
+      }
+      function stop() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+          if(this.readyState == 4 && this.status == 200){
           }
-          else{
-            alert("please enter a positive width and height or select small medium or large");
-            return;
-          }
-          xhttp.send();
+        };
+        xhttp.open("GET", "/stop", true); 
+        xhttp.send();
       }
     </script>
   </body>
