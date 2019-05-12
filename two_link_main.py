@@ -1,105 +1,80 @@
 '''
-Kinematic Calculations and Servo Values for TTM Technology's SCARA Robot. Name: SCARA6-17
- 2019 PSU Senior Mechanical Engineering Capstone, Team 17
+Background:
+    This is the main script that encompus's the functions for TTM's two link serial manipulator that
+    takes the place of manual copper thickness probing with that of a Fischer Scope.
 
- Shawn Richardson:     Programmer and Programming Author/Editor, Designer, CAD, Subgroup Overseer
- Alex Gavin:           Programmer, Designer, Subgroup Overseer
- Chris McCormick:      CAD, Designer, Fabricator, Assembly
- Erik Kolste:          CAD, Designer, FEA, Recorder, Fabricator, Assembly
- John Norris:          Group Leader, Project Planner, Designer, CAD, Assembly
- Quinn Gordon:         CAD, Designer, Assembly
+    The project was carried on by a one of PSU's 2019 Senior Mechanical Engineering Capstones, Team 17
 
- Start Date:   03/04/19
- End Date:     05/17/19
+    The robot was given the name SCARA6-17, SCARA (Selective Compliance Articulated Robot Arm),
+    6 because we are a team of six, and 17 because corresponding to our end date. 
 
- Script Object: This script calculates the servo values for Dynamixel MX28 and MX64 servos by using
- geometric inverse kinematics, as all code is carried out in Python.
- The values are than sent to the Dynamixel U2D2 compiler to the first Dynamixel in line out to the
- others which than positions the servos to the desired/programmed coordinates.
- The "grid_formula" came from
- https://math.stackexchange.com/questions/1039482/how-to-evenly-space-a-number-of-points-in-a-rectangle
- inverse kinematics starting from beta to theta2l came from "Modern Robotics"
- the manipulation of the servo values starting at the first v1l through sv2.flatten was developed by Shawn
- Alex put together the grid formula and worked on the move_servo function as well as Shawn
+Alex Gavin:           Programmer, Designer, Subgroup Overseer
+Chris McCormick:      CAD, Designer, Fabricator, Assembly
+Erik Kolste:          CAD, Designer, FEA, Recorder, Fabricator, Assembly
+John Norris:          Group Leader, Project Planner, Designer, CAD, Assembly
+Shawn Richardson:     Programmer and Programming Author/Editor, Designer, CAD, Subgroup Overseer
+Quinn Gordon:         CAD, Designer, Assembly
+
+Start Date:   03/04/19
+End Date:     05/17/19
+
+Script Object:
+    This script works in accordance with GUI named app.py that was created by Geoffrey Olson,
+    a Computer Science undergraduate at PSU. The GUI is setup where the user can select TTM's standard size
+    panel labeled such as small, medium, or large which corresponds to their three standard panel sizes of
+    18"x24", 22"x24", or 24"x28". The GUI also has the option to put in a custom length and width, however
+    no matter the case, the user has to put in the defined number of points that are needed in order to
+    collect the data.
+
+    From there the sizes and number of points carry through over to the num_pts function which calculates
+    the corrdinates over which the robot is to move to probe, the nx and ny formula came from Stack Exchange,
+    https://math.stackexchange.com/questions/1039482/how-to-evenly-space-a-number-of-points-in-a-rectangle.
+    However due to the algorithim of this formula what the user inputs in the GUI for the number of points
+    could perhaps not be the actual number of points calculated in the formula. The reason for this is not
+    known as it was not evaluated due to project completion time.
+    
+    The inverse kinematics are than calculated using trigometeric functions, obtained from
+    Modern Robotics: Mechanics, Planning, and Control, 2017, pgs. 187-188.
+
+    After using kinematics and finding servo values for servo 1 and 2 they are than forced to move using
+    pydynamixel found on GIT HUB, https://pypi.org/project/pydynamixel/. The contents of the move function
+    came from the Motion Example found on the pydynamixel link pasted above. 
+
+    The robot than returns to its home position the robot than returns to its home postion which than it
+    waits for its next undertaking. 
 '''
 
 # Python Libraries Imported
 # from pydynamixel import dynamixel, registers
 import two_link_main
 import numpy as np
-import grid
-import math
-import time
-import math
+import math as mt
+import time as t
 
 
 def num_pts (length, width, points):
-    xoffset = 14
-    yoffset = 3
-
-    l = length
-    w = width
-    n = points
-
-    # if num_pts(24, 18, points):
-
-    nx = mt.sqrt(((l*n)/w) + (((l - w)**2)/(4*w**2))) - ((l - w)/(2*w))
-    ny = n/nx
-    del_x = l/(nx - 1)
-    del_y = w/(ny - 1)
-    rd_nx = round(nx)
-    rd_ny = round(ny)
-    x, y = np.meshgrid(((np.linspace(1, l - 1, rd_nx))), np.linspace(1, w - 1, rd_ny))
-    X = xoffset - x
-    Y = yoffset + y
-
-##    l_1= 15                     #length from the base to the right                     #length from the base to the left
-##    w= width - 2
-##    h= height - 4
-##    if points <=90:
-##        pts= points +5
-##    elif points >90:
-##        pts= points
-##    n_x= (math.sqrt(((w / h) * pts) + ((w - h)**2) / (4 * (h ** 2))) - ((w - h)/(2 * h)))
-##    n_x= round(n_x)
-##
-##    n_y= pts/n_x
-##
-##    n_y=round(n_y)
-##    point=n_y * n_x
-##    print(point)
-##    delx = w/(n_x -1)          #the spacing between the x points
-##
-##    dely = h/(n_y -1)        #the spacing beween the y points
-##
-##    print(delx)
-##    print(dely)
-##    #x = np.zeros(shape=n_x)     #creates an array of zeros with length values = of # of points in x direction
-##
-##    #y=  np.zeros(shape=n_y)     #creates an array of zeros with length values = of # of points in y direction
-##
-##    if (w > l_1):
-##        offset= -(w - l_1)
-##        x=np.arange(offset,l_1,delx)
-##        y=np.arange(3,height,dely)
-##        X,Y = np.meshgrid(x,y)
-##
-##    elif(w < l_1):
-##        offset = l_1 - w
-##        x=np.arange(offset, l_1,delx)
-##        y=np.arange(1,height,dely)
-##        X,Y = np.meshgrid(x,y)
-##
-##    point = x.size * y.size
-##    print(point)
-##    return(X,Y)
-
+        l = length
+        w = width
+        n = points
+        xoffset = 14
+        yoffset = 3
+        nx = mt.sqrt(((l*n)/w) + (((l - w)**2)/(4*w**2))) - ((l - w)/(2*w))
+        ny = n/nx
+        del_x = l/(nx - 1)
+        del_y = w/(ny - 1)
+        rd_nx = round(nx)
+        rd_ny = round(ny)
+        x, y = np.meshgrid(((np.linspace(1, l - 1, rd_nx))), np.linspace(1, w - 1, rd_ny))
+        X = xoffset - x
+        Y = yoffset + y
+        return(X, Y)   
+      
 
 def ikin(X, Y):
     # Arm Link Lengths: change theses as needed
     a1 = 16
     a2 = 14.5
-    # Inverse kinematics from "Modern Robotics"
+    # Inverse kinematics
     beta = np.degrees(np.arccos(((a1 ** 2 + a2 ** 2 - X[:] ** 2 - Y[:] ** 2)/ (2 * a1 * a2))))
     alpha = np.degrees(np.arccos((X[:] ** 2 + Y[:] ** 2 + a1 ** 2 - a2 ** 2) / (2 * a1 * np.sqrt(X[:] ** 2 + Y[:] ** 2))))
     gamma = np.degrees(np.arctan2(Y[:], X[:]))
@@ -107,7 +82,7 @@ def ikin(X, Y):
     theta2r = 180 - beta
     theta1l = gamma + alpha
     theta2l = beta - 180
-    # Ratio for MX
+    # Ratio for MX64/28
     r = 4095/360
     # Servo values for left and right elbow orientations
     v1l = (theta1l + 90) * r
@@ -162,11 +137,10 @@ def move(sv1, sv2):
         dynamixel.setposition(ser,servo1_id,servoPos1)
         dynamixel.setposition(ser,servo2_id,servoPos2)
         dynamixel.send_action_packet(ser)
-
         print('Success')
         i = i + 1
         k = k + 1
-        time.sleep(3)
+        t.sleep(3)
     return()
 
 
@@ -178,9 +152,7 @@ def home():
     return()
 
 
-
 if __name__ == "__main__":
+    bar = tlm.num_pts(length, width, points)
+    ikin(bar[0],bar[1])
 
-        bar = tlm.num_pts(length, width, points)
-        ikin(bar[0],bar[1])
-        
