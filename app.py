@@ -27,7 +27,7 @@ def stop():
 
 if __name__ == "__main__":
   if len(sys.argv) > 1:
-    port = str(sys.argv[1])
+    port = sys.argv[1]
   else:
     port = 5000
   url = "http://127.0.0.1:" + str(port)
