@@ -1,0 +1,34 @@
+import math as mt
+import numpy as np
+l = 28
+w = 24
+n = 20
+xoffset = 15
+yoffset = 4
+nx = mt.sqrt(((l*n)/w) + (((l - w)**2)/(4*w**2))) - ((l - w)/(2*w))
+ny = n/nx
+del_x = l/(nx - 1)
+del_y = w/(ny - 1)
+rd_nx = round(nx)
+rd_ny = round(ny)
+x, y = np.meshgrid(((np.linspace(1, l - 1, rd_nx))), np.linspace(1, w - 1, rd_ny))
+X = xoffset - x
+Y = yoffset + y
+print(X)
+print(Y)
+
+a1 = 16
+a2 = 16.5
+# Inverse kinematics
+beta = np.degrees(np.arccos(((a1 ** 2 + a2 ** 2 - X[:] ** 2 - Y[:] ** 2)/ (2 * a1 * a2))))
+alpha = np.degrees(np.arccos((X[:] ** 2 + Y[:] ** 2 + a1 ** 2 - a2 ** 2) / (2 * a1 * np.sqrt(X[:] ** 2 + Y[:] ** 2))))
+gamma = np.degrees(np.arctan2(Y[:], X[:]))
+
+theta1r = gamma - alpha
+theta2r = 180 - beta
+theta1l = gamma + alpha
+theta2l = beta - 180
+print(theta1r)
+print(theta2r)
+print(theta1l)
+print(theta2l)

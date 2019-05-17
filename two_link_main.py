@@ -51,6 +51,9 @@ import numpy as np
 import math as mt
 import time as t
 
+        
+        
+          
 
 def num_pts (length, width, points):
         l = length
@@ -67,6 +70,7 @@ def num_pts (length, width, points):
         x, y = np.meshgrid(((np.linspace(1, l - 1, rd_nx))), np.linspace(1, w - 1, rd_ny))
         X = xoffset - x
         Y = yoffset + y
+        print('X: ' + str(X))
         return(X, Y)   
       
 
