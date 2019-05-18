@@ -128,20 +128,19 @@ def move(sv1, sv2):
     servo1_id = 1
     servo2_id = 2
     servo3_id = 3
-
-    while(i< len(sv1)):
-        k=0
-        i=0
+    k=0
+    i=0
+    while(i< len(sv1)):        
         servoPos1= int(sv1[k])
         servoPos2= int(sv2[k])
         ser = dynamixel.get_serial_for_url(serial_port)
-        dynamixel.setposition(ser,servo1_id,servoPos1)
-        dynamixel.setposition(ser,servo2_id,servoPos2)
+        dynamixel.set_position(ser,servo1_id,servoPos1)
+        dynamixel.set_position(ser,servo2_id,servoPos2)
         dynamixel.send_action_packet(ser)
         print('Success')
         i = i + 1
         k = k + 1
-        t.sleep(3)
+        t.sleep(0.5)
     return()
 
 
