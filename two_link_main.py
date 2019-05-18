@@ -140,14 +140,16 @@ def move(sv1, sv2):
         print('Success')
         i = i + 1
         k = k + 1
-        t.sleep(0.5)
+        t.sleep(1)
     return()
 
 
 def home():
     ser = dynamixel.get_serial_for_url(serial_port)
+    servo1_id = 1
+    servo2_id = 2
     dynamixel.setposition(ser, servo1_id, 3071)
-    dynamixel.setposition(ser, servo2_id, 1024)
+    dynamixel.setposition(ser, servo2_id, 1010)
     dynamixel.send_action_packet(ser)
     return()
 
