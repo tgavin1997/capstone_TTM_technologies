@@ -18,7 +18,7 @@ def submit():
   width = int(request.args.get('width'))
   print("Number of points: " + str(points) + ", length: " + str(length) + " width: " + str(width))
   bar = tlm.num_pts(length, width, points)
-  bar2 = tlm.ikin(bar[0], bar[1])
+  bar1 = tlm.ikin(bar[0], bar[1])
   tlm.move(bar1[0], bar1[1])
   tlm.home() 
   return render_template('index.html')
