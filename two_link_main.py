@@ -45,16 +45,13 @@ Script Object:
 '''
 
 # Python Libraries Imported
-# from pydynamixel import dynamixel, registers
+from pydynamixel import dynamixel, registers
 import two_link_main
 import numpy as np
 import math as mt
-import time as t
-
-        
+import time as t    
         
           
-
 def num_pts (length, width, points):
         l = length
         w = width
