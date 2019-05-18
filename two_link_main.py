@@ -155,5 +155,7 @@ def home():
 
 if __name__ == "__main__":
     bar = tlm.num_pts(length, width, points)
-    ikin(bar[0],bar[1])
+    bar1 = ikin(bar[0],bar[1])
+    tlm.move(bar1[0], bar1[1])
+    tlm.home()
 
