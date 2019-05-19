@@ -134,8 +134,8 @@ def move(sv1, sv2):
         servoPos1= int(sv1[k])
         servoPos2= int(sv2[k])
         ser = dynamixel.get_serial_for_url(serial_port)
-        dynamixel.set_position(ser,servo1_id,servoPos1)
-        dynamixel.set_position(ser,servo2_id,servoPos2)
+        dynamixel.set_position(ser, servo1_id, servoPos1)
+        dynamixel.set_position(ser, servo2_id, servoPos2)
         dynamixel.send_action_packet(ser)
         print('Success')
         i = i + 1
@@ -154,9 +154,9 @@ def home():
     return()
 
 
-##if __name__ == "__main__":
-##    bar = tlm.num_pts(length, width, points)
-##    bar1 = ikin(bar[0],bar[1])
-##    move(bar1[0], bar1[1])
-##    home()
+if __name__ == "__main__":
+    bar = tlm.num_pts(length, width, points)
+    bar1 = ikin(bar[0],bar[1])
+    move(bar1[0], bar1[1])
+    home()
 
