@@ -14,8 +14,8 @@ def root():
 @app.route("/submit", methods=['GET', 'POST'])
 def submit():
   points = int(request.args.get('points'))
-  width = int(request.args.get('width'))
   length = int(request.args.get('length'))
+  width = int(request.args.get('width'))
   print("Number of points: " + str(points) + " width: " + str(width) + " length: " + str(length))
   bar = tlm.num_pts(length, width, points)
   bar1 = tlm.ikin(bar[0], bar[1])
