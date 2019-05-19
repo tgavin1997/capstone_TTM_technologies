@@ -3,7 +3,6 @@ import threading, webbrowser
 import sys
 from flask import Flask, render_template, request
 import two_link_main as tlm
-import grid
 
 app = Flask(__name__)
 

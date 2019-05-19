@@ -6,7 +6,7 @@ Background:
     The project was carried on by a one of PSU's 2019 Senior Mechanical Engineering Capstones, Team 17
 
     The robot was given the name SCARA6-17, SCARA (Selective Compliance Articulated Robot Arm),
-    6 because we are a team of six, and 17 because corresponding to our end date. 
+    6 because we are a team of six, and 17 corresponding to our end date. 
 
 Alex Gavin:           Programmer, Designer, Subgroup Overseer
 Chris McCormick:      CAD, Designer, Fabricator, Assembly
@@ -46,7 +46,7 @@ Script Object:
 
 # Python Libraries Imported
 # from pydynamixel import dynamixel, registers
-import two_link_main
+# import two_link_main
 import numpy as np
 import math as mt
 import time as t    
@@ -67,7 +67,6 @@ def num_pts (length, width, points):
         x, y = np.meshgrid(((np.linspace(1, l - 1, rd_nx))), np.linspace(1, w - 1, rd_ny))
         X = xoffset - x
         Y = yoffset + y
-        print('X: ' + str(X))
         return(X, Y)   
       
 
@@ -154,9 +153,9 @@ def home():
     return()
 
 
-if __name__ == "__main__":
-    bar = tlm.num_pts(length, width, points)
-    bar1 = ikin(bar[0],bar[1])
-    move(bar1[0], bar1[1])
-    home()
+##if __name__ == "__main__":
+##    bar = tlm.num_pts(length, width, points)
+##    bar1 = ikin(bar[0],bar[1])
+##    move(bar1[0], bar1[1])
+##    home()
 
