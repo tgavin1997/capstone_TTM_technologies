@@ -46,7 +46,7 @@ Script Object:
 
 # Python Libraries Imported
 # from pydynamixel import dynamixel, registers
-# import two_link_main
+import two_link_main
 import numpy as np
 import math as mt
 import time as t    
@@ -153,9 +153,9 @@ def home():
     return()
 
 
-##if __name__ == "__main__":
-##    bar = tlm.num_pts(length, width, points)
-##    bar1 = ikin(bar[0],bar[1])
-##    move(bar1[0], bar1[1])
-##    home()
+if __name__ == "__main__":
+    bar = tlm.num_pts(length, width, points)
+    bar1 = ikin(bar[0],bar[1])
+    move(bar1[0], bar1[1])
+    home()
 
