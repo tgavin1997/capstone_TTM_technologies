@@ -6,7 +6,7 @@ Background:
     The project was carried on by a one of PSU's 2019 Senior Mechanical Engineering Capstones, Team 17
 
     The robot was given the name SCARA6-17, SCARA (Selective Compliance Articulated Robot Arm),
-    6 because we are a team of six, and 17 corresponding to our end date. 
+    6 because we are a team of six, and 17 because corresponding to our end date. 
 
 Alex Gavin:           Programmer, Designer, Subgroup Overseer
 Chris McCormick:      CAD, Designer, Fabricator, Assembly
@@ -45,7 +45,7 @@ Script Object:
 '''
 
 # Python Libraries Imported
-# from pydynamixel import dynamixel, registers
+from pydynamixel import dynamixel, registers
 import two_link_main
 import numpy as np
 import math as mt
@@ -67,6 +67,7 @@ def num_pts (length, width, points):
         x, y = np.meshgrid(((np.linspace(1, l - 1, rd_nx))), np.linspace(1, w - 1, rd_ny))
         X = xoffset - x
         Y = yoffset + y
+        print('X: ' + str(X))
         return(X, Y)   
       
 
@@ -123,18 +124,19 @@ def ikin(X, Y):
 
 
 def move(sv1, sv2):
-    serial_port = '/dev/ttyUSB0'
+    serial_port = 'dev/ttyUSB0'
     servo1_id = 1
     servo2_id = 2
     servo3_id = 3
     k=0
     i=0
-    while(i< len(sv1)):        
+    while(i< len(sv1)):
+        
         servoPos1= int(sv1[k])
         servoPos2= int(sv2[k])
         ser = dynamixel.get_serial_for_url(serial_port)
-        dynamixel.set_position(ser, servo1_id, servoPos1)
-        dynamixel.set_position(ser, servo2_id, servoPos2)
+        dynamixel.setposition(ser,servo1_id,servoPos1)
+        dynamixel.setposition(ser,servo2_id,servoPos2)
         dynamixel.send_action_packet(ser)
         print('Success')
         i = i + 1
@@ -145,10 +147,8 @@ def move(sv1, sv2):
 
 def home():
     ser = dynamixel.get_serial_for_url(serial_port)
-    servo1_id = 1
-    servo2_id = 2
-    dynamixel.set_position(ser, servo1_id, 3071)
-    dynamixel.set_position(ser, servo2_id, 1010)
+    dynamixel.setposition(ser, servo1_id, 3071)
+    dynamixel.setposition(ser, servo2_id, 1024)
     dynamixel.send_action_packet(ser)
     return()
 
