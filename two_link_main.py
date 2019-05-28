@@ -45,7 +45,7 @@ Script Object:
 '''
 
 # Python Libraries Imported
-# from pydynamixel import dynamixel, registers
+from pydynamixel import dynamixel, registers
 import two_link_main as tlm
 import numpy as np
 import math as mt
@@ -135,7 +135,6 @@ def move(sv1, sv2):
     serial_port = '/dev/ttyUSB0'
     servo1_id = 1
     servo2_id = 2
-    servo3_id = 3
     k=0
     i=0
     ser = dynamixel.get_serial_for_url(serial_port)
@@ -166,14 +165,14 @@ def home():
     servo2_id = 2
     ser = dynamixel.get_serial_for_url(serial_port)
     dynamixel.set_position(ser, servo1_id, 3071)
-    dynamixel.set_position(ser, servo2_id, 1020)
+    dynamixel.set_position(ser, servo2_id, 1010)
     dynamixel.send_action_packet(ser)
     return()
 
 
 if __name__ == "__main__":
-    bar = tlm.num_pts(24, 18, 20)
-    bar1 = ikin(bar[0],bar[1])
-    move(bar1[0], bar1[1])
-    home()
+    bar = tlm.num_pts(length, width, points)
+    bar1 = tlm.ikin(bar[0],bar[1])
+    tlm.move(bar1[0], bar1[1])
+    tlm.home()
 
