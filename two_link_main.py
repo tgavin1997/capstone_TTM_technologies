@@ -45,8 +45,8 @@ Script Object:
 '''
 
 # Python Libraries Imported
-from pydynamixel import dynamixel, registers
-import two_link_main
+# from pydynamixel import dynamixel, registers
+import two_link_main as tlm
 import numpy as np
 import math as mt
 import time as t    
@@ -56,8 +56,8 @@ def num_pts (length, width, points):
         l = length
         w = width
         n = points
-        xoffset = 15
-        yoffset = 4
+        xoffset = 16.125
+        yoffset = 2.9
         nx = mt.sqrt(((l*n)/w) + (((l - w)**2)/(4*w**2))) - ((l - w)/(2*w))
         ny = n/nx
         del_x = l/(nx - 1)
@@ -65,6 +65,8 @@ def num_pts (length, width, points):
         rd_nx = round(nx)
         rd_ny = round(ny)
         x, y = np.meshgrid(((np.linspace(1, l - 1, rd_nx))), np.linspace(1, w - 1, rd_ny))
+        print('x: ' + str(x))
+        print('y: ' + str(y)) 
         X = xoffset - x
         Y = yoffset + y
         print('X: ' + str(X))
@@ -73,7 +75,7 @@ def num_pts (length, width, points):
 
 def ikin(X, Y):
     # Arm Link Lengths: change theses as needed
-    a1 = 16
+    a1 = 16.25
     a2 = 16.5
     # Inverse kinematics
     beta = np.degrees(np.arccos(((a1 ** 2 + a2 ** 2 - X[:] ** 2 - Y[:] ** 2)/ (2 * a1 * a2))))
@@ -86,10 +88,16 @@ def ikin(X, Y):
     # Ratio for MX64/28
     r = 4095/360
     # Servo values for left and right elbow orientations
-    v1l = (theta1l + 90) * r
-    v2r = (180 + theta2r) * r
-    v1r = (theta1r + 90) * r
-    v2l = (180 - abs(theta2l)) * r
+    S1L = 80   #offset for the left hand solution of servo 1
+    S2L = 26   #offset for the left hand solution of servo 2    
+    S1R =7     #offset for right hand solution of servo 1   
+    S2R =110   #offset for right hand solution of servo 2    
+    v1l = (theta1l + 90) * r + S1L
+    print('v1l: ' + str(v1l))
+    v2r = (180 + theta2r) * r + S2R 
+    v1r = (theta1r + 90) * r + S1R
+    v2l = (180 - abs(theta2l)) * r - S2L
+    print('v2l: ' + str(v2l))
     # Values rounded to whole number integers
     v1l = np.around(v1l, decimals = 0)
     v2r = np.around(v2r, decimals = 0)
@@ -124,37 +132,47 @@ def ikin(X, Y):
 
 
 def move(sv1, sv2):
-    serial_port = 'dev/ttyUSB0'
+    serial_port = '/dev/ttyUSB0'
     servo1_id = 1
     servo2_id = 2
     servo3_id = 3
     k=0
     i=0
-    while(i< len(sv1)):
-        
+    ser = dynamixel.get_serial_for_url(serial_port)
+    dynamixel.set_velocity(ser,servo1_id,200)
+    dynamixel.set_velocity(ser,servo2_id,550)
+    while(i< len(sv1)):        
         servoPos1= int(sv1[k])
-        servoPos2= int(sv2[k])
-        ser = dynamixel.get_serial_for_url(serial_port)
-        dynamixel.setposition(ser,servo1_id,servoPos1)
-        dynamixel.setposition(ser,servo2_id,servoPos2)
+        servoPos2= int(sv2[k])        
+        dynamixel.set_position(ser,servo1_id,servoPos1)
+        dynamixel.set_position(ser,servo2_id,servoPos2)
         dynamixel.send_action_packet(ser)
+        ismoving=1        
+        while(ismoving == 1):
+            move_1=dynamixel.get_is_moving(ser,servo1_id)
+            move_2=dynamixel.get_is_moving(ser,servo2_id)               
+            if move_1 == False or move_2 == False:
+                ismoving=0
         print('Success')
         i = i + 1
         k = k + 1
-        t.sleep(3)
+        t.sleep(2)        
     return()
 
 
 def home():
+    serial_port = '/dev/ttyUSB0'
+    servo1_id = 1
+    servo2_id = 2
     ser = dynamixel.get_serial_for_url(serial_port)
-    dynamixel.setposition(ser, servo1_id, 3071)
-    dynamixel.setposition(ser, servo2_id, 1024)
+    dynamixel.set_position(ser, servo1_id, 3071)
+    dynamixel.set_position(ser, servo2_id, 1020)
     dynamixel.send_action_packet(ser)
     return()
 
 
 if __name__ == "__main__":
-    bar = tlm.num_pts(length, width, points)
+    bar = tlm.num_pts(24, 18, 20)
     bar1 = ikin(bar[0],bar[1])
     move(bar1[0], bar1[1])
     home()
