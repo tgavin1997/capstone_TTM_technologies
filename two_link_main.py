@@ -50,6 +50,7 @@ import two_link_main as tlm
 import numpy as np
 import math as mt
 import time as t    
+import sys
         
           
 def num_pts (length, width, points):
@@ -141,8 +142,9 @@ def move(sv1, sv2):
     dynamixel.set_velocity(ser,servo1_id,200)
     dynamixel.set_velocity(ser,servo2_id,550)
     while(i< len(sv1)):        
-        servoPos1= int(sv1[k])
-        servoPos2= int(sv2[k])        
+        if mt.isnan(sv1[k]) == False and mt.isnan(sv2[k]) == False:
+            servoPos1= int(sv1[k])
+            servoPos2= int(sv2[k])        
         dynamixel.set_position(ser,servo1_id,servoPos1)
         dynamixel.set_position(ser,servo2_id,servoPos2)
         dynamixel.send_action_packet(ser)
@@ -171,6 +173,13 @@ def home():
 
 
 if __name__ == "__main__":
+    if len(sys.argv) == 4:
+        length = int(sys.argv[1])
+        width = int(sys.argv[2])
+        points = int(sys.argv[3])
+    else:
+        print("Instruction: $ python " + sys.argv[0] + " <length> <width> <points>")
+        exit()
     bar = tlm.num_pts(length, width, points)
     bar1 = tlm.ikin(bar[0],bar[1])
     tlm.move(bar1[0], bar1[1])
