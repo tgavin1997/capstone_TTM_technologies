@@ -34,33 +34,35 @@
         background-color: red;
         margin: 40px;
       }
+      #submit {
+        color: white;
+        background-color: green;
+        margin: 40px;
+      }
     </style>
   </head>
   <body>
       Number of probe points
-      <input type="text" class='textForm' id='numPoints' name="points" value=20><br>
+      <input type="text" class='textForm' id='numPoints' name="points" value=20>
       <h2>Panel Size</h2>
     </form>
     <button class='button' id='small' onclick="setSize('small')">small</button>
     <button class='button' id='medium' onclick="setSize('medium')">medium</button>
     <button class='button' id='large' onclick="setSize('large')">large</button>
     <br>
-    <br>
     or enter custom dimensions
     <br>
     width <input type="text" onclick='resetButtons()'class='textForm' id='width' value=''>
-    height <input type="text" onclick='resetButtons()' class='textForm' id='height' value=''><br>
+    length <input type="text" onclick='resetButtons()' class='textForm' id='length' value=''>
     <br>
-    <button class='button' onclick="submit()">Submit</button>
-    <br>
-    <button class='Stop' onclick="stop()">Stop</button>
+    <button class='button' id='submit' onclick="submit()">Submit</button>
     <script>
       var width = 0;
-      var height = 0;
+      var length = 0;
       var points = 20;
       function resetButtons(){
         width = 0;
-        height = 0;
+        length = 0;
         size = null;
         document.getElementById('small').className = 'button';
         document.getElementById('medium').className = 'button';
@@ -68,26 +70,38 @@
       }
       function resetDimensions(){
         document.getElementById('width').value = null;
-        document.getElementById('height').value = null;
+        document.getElementById('length').value = null;
       }
       function setSize(panelSize){
         resetButtons();
         resetDimensions();
         document.getElementById(panelSize).className = 'selected';
         if(panelSize === 'small'){
-          width = 24;
-          height = 18;
+          width = 18;
+          length = 24;
         }
         if(panelSize === 'medium'){
-          width = 24;
-          height = 21;
+          width = 21;
+          length = 24;
         }
         if(panelSize === 'large'){
-          width = 28;
-          height = 24;
+          width = 24;
+          length = 28;
         }
       } 
+      var submitted = false;
       function submit(){
+	if (submitted === true){
+	  alert("Stop, you're doing that too much");
+	  return;
+	}
+	else{
+	  submitted = true;
+	  setTimeout(
+	    function() {
+	      submitted = false;
+	    }, 30000);
+	}
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
           if(this.readyState == 4 && this.status == 200){
@@ -95,16 +109,17 @@
         };
         points = document.getElementById('numPoints').value;
         widthForm = document.getElementById('width').value;
-        heightForm = document.getElementById('height').value;
-        if( (widthForm.length == 0 || heightForm.length === 0) && width > 0 && height > 0){
-            xhttp.open("GET", "/submit?points=" + points + '&width=' + width + '&height=' + height, true); 
+        lengthForm = document.getElementById('length').value;
+        if( (widthForm.length == 0 || lengthForm.length === 0) && width > 0 && length > 0){
+            xhttp.open("GET", "/submit?points=" + points + '&width=' + width + '&length=' + length, true); 
           }
-        else if(widthForm > 0 && heightForm > 0){
+        else if(widthForm > 0 && widthForm <= 27 && lengthForm > 0 && lengthForm <= 31){
           resetButtons();
-          xhttp.open("GET", "/submit?points=" + points + '&width=' + widthForm + '&height=' + heightForm, true); 
+          xhttp.open("GET", "/submit?points=" + points + '&width=' + widthForm + '&length=' + lengthForm, true); 
         }
         else{
-          alert("please enter a positive width and height or select small medium or large");
+          alert("please enter a width between 0 and 27 and a length between 0 or 31, or select small medium or large");
+	  submitted = false;
           return;
         }
         xhttp.send();

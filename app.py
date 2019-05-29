@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 import threading, webbrowser
 import sys
 from flask import Flask, render_template, request
@@ -12,8 +12,9 @@ def root():
 
 @app.route("/submit", methods=['GET', 'POST'])
 def submit():
+  isRunning = True
   points = int(request.args.get('points'))
-  length = int(request.args.get('height'))
+  length = int(request.args.get('length'))
   width = int(request.args.get('width'))
   print("Number of points: " + str(points) + " width: " + str(width) + " length: " + str(length))
   bar = tlm.num_pts(length, width, points)
