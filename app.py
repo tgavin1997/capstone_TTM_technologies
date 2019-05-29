@@ -12,7 +12,6 @@ def root():
 
 @app.route("/submit", methods=['GET', 'POST'])
 def submit():
-  isRunning = True
   points = int(request.args.get('points'))
   length = int(request.args.get('length'))
   width = int(request.args.get('width'))
