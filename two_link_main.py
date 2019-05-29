@@ -52,7 +52,8 @@ import math as mt
 import time as t    
 import sys
         
-          
+dynamixel.BAUDRATE = 1000000
+
 def num_pts (length, width, points):
         l = length
         w = width
