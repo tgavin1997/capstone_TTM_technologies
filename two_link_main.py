@@ -46,13 +46,14 @@ Script Object:
 
 # Python Libraries Imported
 from pydynamixel import dynamixel, registers
+import PythonLibMightyZap as mighty
 import two_link_main as tlm
 import numpy as np
 import math as mt
 import time as t    
 import sys
         
-dynamixel.BAUDRATE = 1000000
+dynamixel.BAUDRATE = 200000
 
 def num_pts (length, width, points):
         l = length
@@ -134,21 +135,28 @@ def ikin(X, Y):
 
 
 def move(sv1, sv2):
+        
     serial_port = '/dev/ttyUSB0'
     servo1_id = 1
     servo2_id = 2
     k=0
     i=0
     ser = dynamixel.get_serial_for_url(serial_port)
-    dynamixel.set_velocity(ser,servo1_id,200)
-    dynamixel.set_velocity(ser,servo2_id,550)
+    dynamixel.set_velocity(ser,servo1_id,50)
+    dynamixel.set_velocity(ser,servo2_id,100)
     while(i< len(sv1)):        
         if mt.isnan(sv1[k]) == False and mt.isnan(sv2[k]) == False:
             servoPos1= int(sv1[k])
-            servoPos2= int(sv2[k])        
+            servoPos2= int(sv2[k]) 
         dynamixel.set_position(ser,servo1_id,servoPos1)
         dynamixel.set_position(ser,servo2_id,servoPos2)
         dynamixel.send_action_packet(ser)
+        if k==0:
+           t.sleep(0.5)
+           tlm.zap1(0)
+           t.sleep(2)
+           tlm.zap(0)
+           t.sleep(0.5)
         ismoving=1        
         while(ismoving == 1):
             move_1=dynamixel.get_is_moving(ser,servo1_id)
@@ -156,9 +164,14 @@ def move(sv1, sv2):
             if move_1 == False or move_2 == False:
                 ismoving=0
         print('Success')
+        t.sleep(0.5)
+        tlm.zap(0.3)
+        t.sleep(2)
+        tlm.zap(0)
+        t.sleep(0.5)
         i = i + 1
         k = k + 1
-        t.sleep(2)        
+        
     return()
 
 
@@ -170,8 +183,29 @@ def home():
     dynamixel.set_position(ser, servo1_id, 3071)
     dynamixel.set_position(ser, servo2_id, 1010)
     dynamixel.send_action_packet(ser)
+    tlm.zap(0)
+    mighty.CloseMightyZap
     return()
 
+def zap_ping ():
+    mighty.CloseMightyZap    
+    mighty.OpenMightyZap('/dev/ttyUSB0',200000)
+    mighty.goalPosition(0,0)    
+    return(port)
+def zap1 (length):
+    mighty.OpenMightyZap('/dev/ttyUSB0',200000)    
+    value = 3863.2 * length
+    print(value)
+    servo_id=0
+    mighty.goalPosition(servo_id,int(value))
+    return()
+def zap (length):
+      
+    value = 3863.2 * length
+    print(value)
+    servo_id=0
+    mighty.goalPosition(servo_id,int(value))
+    return()
 
 if __name__ == "__main__":
     if len(sys.argv) == 4:
