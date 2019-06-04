@@ -164,7 +164,7 @@ def move(sv1, sv2):
             if move_1 == False or move_2 == False:
                 ismoving=0
                 t.sleep(1)
-                tlm.zap(0.3)     # the variable argument is actuation length in inches
+                tlm.zap(0.6)     # the variable argument is actuation length in inches
                 t.sleep(2)
                 tlm.zap(0)
                 t.sleep(0.75)
