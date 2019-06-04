@@ -60,7 +60,7 @@ def num_pts (length, width, points):
         w = width
         n = points
         xoffset = 16.125
-        yoffset = 2.9
+        yoffset = 3
         nx = mt.sqrt(((l*n)/w) + (((l - w)**2)/(4*w**2))) - ((l - w)/(2*w))
         ny = n/nx
         del_x = l/(nx - 1)
@@ -142,8 +142,8 @@ def move(sv1, sv2):
     k=0
     i=0
     ser = dynamixel.get_serial_for_url(serial_port)
-    dynamixel.set_velocity(ser,servo1_id,50)
-    dynamixel.set_velocity(ser,servo2_id,100)
+    dynamixel.set_velocity(ser,servo1_id,70)
+    dynamixel.set_velocity(ser,servo2_id,125)
     while(i< len(sv1)):        
         if mt.isnan(sv1[k]) == False and mt.isnan(sv2[k]) == False:
             servoPos1= int(sv1[k])
@@ -163,12 +163,13 @@ def move(sv1, sv2):
             move_2=dynamixel.get_is_moving(ser,servo2_id)               
             if move_1 == False or move_2 == False:
                 ismoving=0
-        print('Success')
-        t.sleep(0.5)
-        tlm.zap(0.3)
-        t.sleep(2)
-        tlm.zap(0)
-        t.sleep(0.5)
+                t.sleep(1)
+                tlm.zap(0.3)     # the variable argument is actuation length in inches
+                t.sleep(2)
+                tlm.zap(0)
+                t.sleep(0.75)
+                print('Success')
+        
         i = i + 1
         k = k + 1
         
